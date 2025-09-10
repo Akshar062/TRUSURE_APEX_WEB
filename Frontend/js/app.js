@@ -30,31 +30,30 @@ class LancamApp {
             await ComponentLoader.loadAll();
             
             // Wait for components to be fully loaded
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise(resolve => setTimeout(resolve, 100));
             
-            // Initialize modules in sequence
+            // Initialize theme manager first
             this.themeManager.initialize();
             
-            // Rebuild theme dropdown after components are ready
-            setTimeout(() => {
-                if (this.themeManager) {
-                    this.themeManager.buildThemeDropdown();
-                }
-            }, 200);
+            // Wait a bit more for DOM to settle, then rebuild dropdown
+            await new Promise(resolve => setTimeout(resolve, 200));
+            
+            // Force rebuild the theme dropdown to ensure it's properly connected
+            this.themeManager.buildThemeDropdown();
             
             // Initialize camera and UI controls
             await this.cameraManager.initialize();
             UIControls.initialize();
             
             // Start date/time updates
-            setTimeout(() => {
-                this.dateTimeManager.start();
-            }, 300);
+            this.dateTimeManager.start();
             
             // Make managers globally available
             window.themeManager = this.themeManager;
             window.powerManager = this.powerManager;
             window.cameraManager = this.cameraManager;
+            
+            console.log('LANCAM application initialized successfully');
             
         } catch (error) {
             console.error('Failed to initialize LANCAM application:', error);

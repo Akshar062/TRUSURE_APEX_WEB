@@ -16,10 +16,21 @@ export class ThemeManager {
      * Initialize theme system on page load
      */
     initialize() {
+        console.log('Initializing theme manager...');
         const savedTheme = localStorage.getItem('theme') || 'dark';
         this.setTheme(savedTheme);
         this.setupSystemThemeListener();
-        this.buildThemeDropdown();
+        
+        // Try to build dropdown immediately if elements exist
+        if (document.getElementById('theme-dropdown')) {
+            this.buildThemeDropdown();
+        } else {
+            // If elements don't exist yet, wait and try again
+            console.log('Theme dropdown element not found, will retry after DOM loads');
+            setTimeout(() => {
+                this.buildThemeDropdown();
+            }, 500);
+        }
     }
 
     /**
@@ -27,7 +38,14 @@ export class ThemeManager {
      */
     buildThemeDropdown() {
         const dropdown = document.getElementById('theme-dropdown');
-        if (!dropdown) return;
+        const themeButton = document.getElementById('theme-button');
+        
+        if (!dropdown) {
+            console.warn('Theme dropdown element not found');
+            return;
+        }
+
+        console.log('Building theme dropdown...');
 
         // Clear existing content
         dropdown.innerHTML = '';
@@ -58,22 +76,47 @@ export class ThemeManager {
                         <div class="theme-description">${theme.description}</div>
                     </div>
                 `;
-                option.addEventListener('click', () => this.setTheme(theme.id));
+                option.addEventListener('click', () => {
+                    console.log('Switching to theme:', theme.id);
+                    this.setTheme(theme.id);
+                });
                 content.appendChild(option);
             }
         });
 
         dropdown.appendChild(content);
 
-        // Add dropdown toggle functionality
-        header.addEventListener('click', () => this.toggleDropdown());
+        // Add dropdown toggle functionality to theme button
+        if (themeButton) {
+            // Remove any existing listeners to avoid duplicates
+            themeButton.removeEventListener('click', this.themeButtonClickHandler);
+            
+            this.themeButtonClickHandler = (e) => {
+                e.stopPropagation();
+                console.log('Theme button clicked');
+                this.toggleDropdown();
+            };
+            
+            themeButton.addEventListener('click', this.themeButtonClickHandler);
+            console.log('Theme button click handler attached');
+        } else {
+            console.warn('Theme button element not found');
+        }
+        
+        // Add dropdown toggle functionality to header as well
+        header.addEventListener('click', () => {
+            console.log('Dropdown header clicked');
+            this.toggleDropdown();
+        });
         
         // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
-            if (!dropdown.contains(e.target)) {
+            if (!dropdown.contains(e.target) && !themeButton?.contains(e.target)) {
                 this.closeDropdown();
             }
         });
+
+        console.log('Theme dropdown built successfully');
     }
 
     /**
@@ -112,10 +155,15 @@ export class ThemeManager {
      * Set the current theme
      */
     setTheme(themeId) {
-        if (!this.themes[themeId]) return;
+        if (!this.themes[themeId]) {
+            console.warn('Theme not found:', themeId);
+            return;
+        }
 
         const theme = this.themes[themeId];
         this.currentTheme = themeId;
+
+        console.log('Setting theme to:', themeId);
 
         // Apply theme variables to CSS
         const root = document.documentElement;
@@ -134,6 +182,8 @@ export class ThemeManager {
 
         // Close dropdown after selection
         this.closeDropdown();
+
+        console.log('Theme applied successfully:', themeId);
     }
 
     /**
@@ -199,3 +249,16 @@ export const themeManager = new ThemeManager();
 
 // Make available globally for backward compatibility
 window.themeManager = themeManager;
+
+// Global functions for backward compatibility
+window.toggleDropdown = function() {
+    if (window.themeManager) {
+        window.themeManager.toggleDropdown();
+    }
+};
+
+window.setTheme = function(themeId) {
+    if (window.themeManager) {
+        window.themeManager.setTheme(themeId);
+    }
+};
