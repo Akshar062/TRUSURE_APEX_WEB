@@ -1,0 +1,37 @@
+<nav class="navbar">
+    <div class="navbar-left">
+        <a href="#" class="logo">MyApp</a>
+    </div>
+    
+    <div class="navbar-middle">
+     <h1 class="bold"> Home</h1>
+    </div>
+
+    <div class="navbar-right">
+        <div class="nav-info">
+            <span>🌡️ 39.7°C</span>
+            <span>📅</span>
+        </div>
+        
+        <div class="theme-selector">
+            <button class="theme-button" onclick="toggleDropdown()">
+                <svg class="theme-icon moon-icon" viewBox="0 0 24 24">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+                </svg>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M7 10l5 5 5-5z"/>
+                </svg>
+            </button>
+            
+            <div class="theme-dropdown" id="theme-dropdown">
+                <!-- Theme options will be dynamically populated by the theme manager -->
+            </div>
+
+            
+        </div>      
+        
+        <button class="power-button" onclick="powerButton()">
+            <img src="./images/power-button.png" alt="" width="15" height="15">
+        </button>
+    </div>
+</nav>

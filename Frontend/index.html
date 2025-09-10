@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyApp - Navbar with Theme Selector</title>
+    <link rel="stylesheet" href="./style.css">
+   
+</head>
+<body data-theme="dark">
+   <!-- Top Navbar -->
+   <div id="navbar"></div>
+   <!-- Main Content -->
+
+<div class="sidebar">
+    <div class="sidebar-header">
+        <div class="logo">MINDRON</div>
+        <div class="subtitle">Trusure Apex</div>
+    </div>
+        
+        <div class="form-group1">
+            <label>Lot No:</label>
+            <input type="text" id="lotNo" placeholder="">
+        </div>
+        
+        <div class="form-group1">
+            <label>ID:</label>
+            <input type="text" id="deviceId" placeholder="">
+        </div>
+        
+        <div class="form-group1">
+            <label>Type:</label>
+            <select id="deviceType">
+                <option>SELECT</option>
+                <option>Camera A</option>
+                <option>Camera B</option>
+                <option>Scanner</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Remarks:</label>
+            <textarea id="remarks" placeholder=""></textarea>
+        </div>
+        
+        <div class="toggle-group">
+            <label>Super Image</label>
+            <div class="toggle-switch" onclick="toggleSwitch(this)"></div>
+        </div>
+        
+        <div class="toggle-group">
+            <label>Auto Marking</label>
+            <div class="toggle-switch" onclick="toggleSwitch(this)"></div>
+        </div>
+        
+        <div class="focus-section">
+            <div class="focus-header">
+                <span class="focus-value">0</span>
+                <button class="auto-focus-btn">Auto Focus</button>
+            </div>
+            <input type="range" class="slider" min="0" max="100" value="0" id="focusSlider">
+        </div>
+        
+        <button class="scan-btn" onclick="scanBangles()">Scan Bangles</button>
+    </div>
+
+    <div class="camera-area" id="cameraArea">
+        <div class="wake-area" onclick="wakeCamera()"></div>
+        
+        <!-- If camera is not active, show placeholder -->
+        <div class="camera-placeholder" id="cameraPlaceholder" style="display: none;">
+            <h2>Camera is sleeping</h2>
+            <p>Click to wake up</p>
+        </div>
+
+        <!-- Live Camera Preview -->
+        <div class="camera-feed" id="cameraFeed">
+            <img src="/stream" alt="Live Camera Feed" id="cameraPreview" />
+        </div>
+    </div>
+    
+  
+    <div class="controls-panel">
+        <div class="focus-section">
+        <div class="control-group">
+            <span class="control-label">Exposure: 20.00 ms</span>
+            <input type="range" class="slider" min="1" max="100" value="20" id="exposureSlider">
+        </div>
+        </div>
+        <div class="focus-section">
+        <div class="control-group">
+            <span class="control-label">Gain: 1.00</span>
+            <input type="range" class="slider" min="100" max="6400" value="100" id="gainSlider">
+        </div>
+    </div>
+        
+        <button class="light-btn">Turn On Light</button>
+    </div>
+
+    <!-- Power Menu Overlay -->
+    <div id="power-menu-overlay" class="power-menu-overlay">
+        <div class="power-menu">
+            <h2 class="power-menu-title">Power Options</h2>
+            <div class="power-options">
+                <button class="power-option" onclick="handlePowerAction('poweroff')">
+                    <svg class="power-option-icon" viewBox="0 0 24 24">
+                        <path d="M18.36 6.64a9 9 0 11-12.73 0"/>
+                        <line x1="12" y1="2" x2="12" y2="12"/>
+                    </svg>
+                    <span>Power Off</span>
+                </button>
+                <button class="power-option" onclick="handlePowerAction('shutdown')">
+                    <svg class="power-option-icon" viewBox="0 0 24 24">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                    </svg>
+                    <span>Shutdown</span>
+                </button>
+                <button class="power-option" onclick="handlePowerAction('logout')">
+                    <svg class="power-option-icon" viewBox="0 0 24 24">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16,17 21,12 16,7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                    <span>Logout</span>
+                </button>
+            </div>
+            <button class="power-menu-close" onclick="closePowerMenu()">
+                <svg viewBox="0 0 24 24">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+    <script type="module" src="script.js"></script>
+    
+</body>
+</html>
