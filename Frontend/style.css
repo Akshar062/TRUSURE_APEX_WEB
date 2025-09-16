@@ -897,6 +897,7 @@ body {
     background: var(--bg-tertiary);
     border-radius: 8px;
     position: relative;
+    overflow: hidden; /* Ensure scroll events are captured */
 }
 
 .camera-placeholder {
@@ -994,6 +995,28 @@ body {
     height: 100%;
     object-fit: cover;
     border-radius: 8px;
+    cursor: grab; /* Indicate that zoom is available */
+}
+
+.camera-feed img:active {
+    cursor: grabbing;
+}
+
+/* Zoom feedback styles */
+.zoom-feedback {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 1000;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
 }
 
 .camera-feed.active {

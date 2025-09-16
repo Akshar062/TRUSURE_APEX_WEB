@@ -36,8 +36,11 @@ def init_camera():
     try:
         picam2 = Picamera2()
         sensorSize = picam2.sensor_resolution
-        preview_config = picam2.create_video_configuration(
-            main={"size": (sensorSize[0] // 4, sensorSize[1] // 4)},
+        preview_config = picam2.create_preview_configuration(
+            main={"size": (sensorSize[0] // 3, sensorSize[1] // 3)},
+            controls={
+                "AfMode": 2,
+            }
         )
         picam2.configure(preview_config)
         picam2.start()
@@ -45,6 +48,7 @@ def init_camera():
     except Exception as e:
         print(f"Failed to initialize camera: {e}")
         picam2 = None
+
 
 
 def get_camera():

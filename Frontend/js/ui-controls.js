@@ -209,7 +209,22 @@ export class UIControls {
     }
 }
 
-// Global function for backward compatibility
+// Global functions for backward compatibility
 window.toggleSwitch = function(element) {
     UIControls.toggleSwitch(element);
+};
+
+window.wakeCamera = function() {
+    if (window.cameraManager) {
+        window.cameraManager.wakeCamera();
+    } else {
+        console.error('Camera manager not available');
+    }
+};
+
+window.scanBangles = function() {
+    const scanBtn = document.querySelector('.scan-btn');
+    if (scanBtn) {
+        scanBtn.click();
+    }
 };

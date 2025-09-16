@@ -1,0 +1,48 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Flask instance folder
+instance/
+*.db
+*.sqlite3
+
+# Environment / virtualenv
+venv/
+env/
+ENV/
+.venv/
+*.egg-info/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python coverage
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
+
+# Node / Frontend dependencies (if you use npm/yarn)
+node_modules/
+npm-debug.log
+yarn-error.log
+dist/
+build/
+
+# Compiled frontend files (optional, if generated)
+*.min.js
+*.min.css

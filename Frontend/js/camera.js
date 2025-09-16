@@ -15,6 +15,14 @@ export class CameraManager {
         this.initializeCamera();
         await this.loadCameraControls();
         this.setupEventListeners();
+        
+        // Set up zoom on camera preview if it exists and camera is active
+        if (this.cameraActive) {
+            // Small delay to ensure DOM is ready
+            setTimeout(() => {
+                this.setupCameraEventListeners();
+            }, 200);
+        }
     }
 
     /**
@@ -88,6 +96,8 @@ export class CameraManager {
         // Camera preview error handling
         const cameraPreview = document.getElementById('cameraPreview');
         if (cameraPreview) {
+            console.log('Camera preview element found, setting up event listeners');
+            
             cameraPreview.addEventListener('error', function() {
                 console.error('Failed to load camera stream');
                 this.style.display = 'none';
@@ -97,7 +107,128 @@ export class CameraManager {
             cameraPreview.addEventListener('load', function() {
                 console.log('Camera stream loaded successfully');
             });
+
+            // 🔹 Add zoom with mouse scroll
+            this.setupZoomListener(cameraPreview);
+        } else {
+            console.warn('Camera preview element not found!');
         }
+    }
+
+    setupZoomListener(cameraPreview) {
+        let zoom = 1.0;        // Default zoom
+        const zoomStep = 0.1;
+        const minZoom = 1.0;
+        const maxZoom = 4.0;
+
+        console.log('Setting up zoom listener on camera preview');
+
+        // Add wheel event listener for zoom
+        const handleZoom = async (event) => {
+            console.log('Wheel event detected:', event.deltaY);
+            event.preventDefault();
+            event.stopPropagation();
+
+            const oldZoom = zoom;
+            
+            if (event.deltaY < 0) {
+                zoom = Math.min(zoom + zoomStep, maxZoom); // zoom in
+            } else {
+                zoom = Math.max(zoom - zoomStep, minZoom); // zoom out
+            }
+
+            if (zoom !== oldZoom) {
+                console.log("Zoom level changed from", oldZoom, "to", zoom);
+                
+                // Show zoom level to user
+                this.showZoomFeedback(zoom);
+
+                try {
+                    const response = await fetch(`/api/camera/zoom?level=${zoom}`, { 
+                        method: "POST" 
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    console.log('Zoom API response:', data);
+                    
+                } catch (err) {
+                    console.error("Failed to set zoom:", err);
+                    // Revert zoom on error
+                    zoom = oldZoom;
+                    this.showZoomFeedback(zoom, true);
+                }
+            }
+        };
+
+        // Try multiple ways to attach the event listener
+        cameraPreview.addEventListener("wheel", handleZoom, { passive: false });
+        
+        // Also try on the parent container in case the image doesn't receive events
+        const cameraFeed = cameraPreview.closest('.camera-feed');
+        if (cameraFeed) {
+            console.log('Also adding zoom listener to camera feed container');
+            cameraFeed.addEventListener("wheel", handleZoom, { passive: false });
+        }
+
+        // Store the handler for potential cleanup
+        this.zoomHandler = handleZoom;
+        
+        console.log('Zoom listener setup complete');
+    }
+
+    /**
+     * Show zoom level feedback to user
+     */
+    showZoomFeedback(zoomLevel, isError = false) {
+        // Remove any existing zoom feedback
+        const existingFeedback = document.querySelector('.zoom-feedback');
+        if (existingFeedback) {
+            existingFeedback.remove();
+        }
+
+        // Create zoom feedback element
+        const feedback = document.createElement('div');
+        feedback.className = 'zoom-feedback';
+        feedback.style.cssText = `
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: ${isError ? 'rgba(255, 107, 107, 0.9)' : 'rgba(0, 0, 0, 0.7)'};
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 1000;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        `;
+        
+        feedback.textContent = isError ? 'Zoom Error!' : `Zoom: ${(zoomLevel * 100).toFixed(0)}%`;
+
+        // Add to camera area
+        const cameraArea = document.getElementById('cameraArea');
+        if (cameraArea) {
+            cameraArea.style.position = 'relative';
+            cameraArea.appendChild(feedback);
+        }
+
+        // Auto-remove after 2 seconds
+        setTimeout(() => {
+            if (feedback && feedback.parentNode) {
+                feedback.style.opacity = '0';
+                setTimeout(() => {
+                    if (feedback && feedback.parentNode) {
+                        feedback.remove();
+                    }
+                }, 300);
+            }
+        }, 2000);
     }
 
     /**
@@ -223,9 +354,27 @@ export class CameraManager {
                 headers: { 'Content-Type': 'application/json' }
             })
             .then(response => response.json())
-            .then(data => console.log('Camera started:', data))
+            .then(data => {
+                console.log('Camera started:', data);
+                // Ensure zoom listener is set up after camera starts
+                this.setupCameraEventListeners();
+            })
             .catch(error => console.error('Error starting camera:', error));
         }
+    }
+
+    /**
+     * Set up camera event listeners after camera is started
+     */
+    setupCameraEventListeners() {
+        // Small delay to ensure the camera preview is fully loaded
+        setTimeout(() => {
+            const cameraPreview = document.getElementById('cameraPreview');
+            if (cameraPreview && !this.zoomHandler) {
+                console.log('Setting up camera event listeners after wake');
+                this.setupZoomListener(cameraPreview);
+            }
+        }, 500);
     }
 
     /**
