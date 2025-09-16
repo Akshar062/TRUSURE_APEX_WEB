@@ -546,7 +546,7 @@ body {
     /* background-color: var(--bg-secondary);
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border); */
-    background: transparent;
+    background: var(--bg-secondary);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -648,9 +648,9 @@ body {
 }
 
 .sidebar {
-    width: 320px;
-    background: var(--bg-secondary);
-    padding: 20px;
+    width: 380px;
+    /* background: var(--bg-secondary); */
+    padding: 40px;
     padding-top: 40px;
     border-right: 1px solid var(--border);
     overflow-y: auto;
@@ -714,19 +714,22 @@ body {
     align-items: center;
     white-space: nowrap;
     gap: 20px;
+      justify-content: space-between;
 }
 
 .form-group1 label {
     display: block;
     color: var(--text-secondary);
     font-size: 14px;
-    margin-bottom: 8px;
+    /* margin-bottom: 8px; */
+  
 }
 
 .form-group1 input,
 .form-group1 select,
 .form-group1 textarea {
-    width: 100%;
+    /* flex:1; */
+    width: 200px;
     background: var(--bg-tertiary);
     border: 1px solid var(--border);
     border-radius: 6px;
@@ -770,7 +773,7 @@ body {
 }
 
 .toggle-switch.active {
-    background: var(--accent);
+    background: var(--success);
 }
 
 .toggle-switch::after {
@@ -871,7 +874,7 @@ body {
 
 .scan-btn {
     width: 100%;
-    background: var(--accent);
+    background: var(--bg-tertiary);
     color: white;
     border: none;
     padding: 12px;
@@ -918,9 +921,9 @@ body {
 }
 
 .controls-panel {
-    width: 320px;
-    background: var(--bg-secondary);
-    padding: 20px;
+    width: 380px;
+    /* background: var(--bg-secondary); */
+    padding: 40px;
     padding-top: 40px;
     border-left: 1px solid var(--border);
 }
@@ -996,3 +999,58 @@ body {
 .camera-feed.active {
     display: flex;
 }
+
+
+
+
+/* #result{
+    flex:1;
+    padding:10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+} */
+
+
+#scan{
+    flex:1;
+    padding:20px;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+
+/* #compare{
+    flex:1;
+    padding:20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
+/* #history{
+    flex:1;
+    padding:20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
+/* #settings{
+    flex:1;
+    padding:20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
+/* #help{
+    flex:1;
+    padding:20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
+/* aditya bhaiya css */

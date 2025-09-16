@@ -16,7 +16,20 @@ export class UIControls {
     /**
      * Set up navigation tab functionality
      */
-    static setupNavigationTabs() {
+        static setupNavigationTabs() {
+        // Define routes
+        const routes = {
+            "/": "home",
+            "/home": "home",
+            "/scan": "scan",
+            "/result": "result",
+            "/compare": "compare",
+            "/certificates": "certificates",
+            "/history": "history",
+            "/settings": "settings",
+            "/help": "help"
+        };
+
         const navItems = document.querySelectorAll('.nav-item');
         
         navItems.forEach(item => {
@@ -29,11 +42,72 @@ export class UIControls {
                 // Add active class to clicked item
                 this.classList.add('active');
                 
-                // Navigation logic
+                // Get the route from data attribute
                 const tab = this.getAttribute('data-tab');
-                console.log('Navigating to:', tab);
+                const route = routes[`/${tab}`] || tab;
+                
+                console.log('Navigating to:', route);
+                
+                // Navigate to the page
+                UIControls.navigateToPage(route);
             });
         });
+    }
+
+    /**
+     * Navigate to different pages based on route
+     * @param {string} route - The route to navigate to
+     */
+    static async navigateToPage(route) {
+        const mainContent = document.querySelector('.sidebar').parentElement;
+
+        // Hide all core sections initially
+        const sections = ['.sidebar', '.camera-area', '.controls-panel', '.wake-area'];
+        sections.forEach(sel => {
+            const el = document.querySelector(sel);
+            if (el) el.style.display = 'none';
+        });
+
+        // Hide all dynamic containers (result, scan, etc.)
+        document.querySelectorAll('.page-container').forEach(container => {
+            container.style.display = 'none';
+        });
+
+        // Handle routes
+        if (route === 'home') {
+            // Show main layout again
+            sections.forEach(sel => {
+                const el = document.querySelector(sel);
+                if (el) el.style.display = 'block';
+            });
+            return;
+        }
+
+        // For result, scan, compare, etc.
+        try {
+            const response = await fetch(`./components/${route}.html`);
+            const resultHTML = await response.text();
+
+            // Create or update container
+            let container = document.getElementById(route);
+            if (!container) {
+                container = document.createElement('div');
+                container.id = route;
+                container.classList.add('page-container'); // pick up CSS styles
+                mainContent.appendChild(container);
+            }
+
+            // Parse HTML and extract matching section
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(resultHTML, 'text/html');
+            const bodyContent = doc.querySelector(`#${route}`);
+
+            container.innerHTML = bodyContent ? bodyContent.outerHTML : resultHTML;
+            container.style.display = 'flex';
+
+        } catch (error) {
+            console.error(`Error loading ${route} page:`, error);
+        }
     }
 
     /**
@@ -107,10 +181,9 @@ export class UIControls {
         }
     }
 
-    /**
-     * Handle Super Image toggle functionality
+     /**      * Handle Super Image toggle functionality
      * @param {boolean} isOn - Whether the toggle is on
-     */
+      */
     static handleSuperImageToggle(isOn) {
         if (isOn) {
             console.log('Super Image feature enabled');

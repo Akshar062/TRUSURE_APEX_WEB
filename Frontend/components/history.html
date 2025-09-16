@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .hmain {
+        width: 100vw;
+        height: 92vh;
+        /* margin-bottom: 100px; */
+        /* padding-top: 50px; */
+        background-color: var(--bg-primary);
+        display: grid;
+        grid-template-columns: minmax(300px, 400px) 1fr minmax(300px, 400px);
+        gap: 0;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .hleft-panel {
+        /* background-color: var(--bg-secondary); */
+        /* border-right: 1px solid var(--border); */
+        margin-bottom: 60px;
+        overflow-y: auto;
+        transition: transform 0.3s ease;
+        padding: 20px;
+      }
+
+      .hcenter-panel {
+        /* background-color: var(--bg-secondary); */
+        /* border-right: 1px solid var(--border);
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border); */
+        margin-bottom: 60px;
+        overflow-y: auto;
+        transition: transform 0.3s ease;
+        padding: 20px;
+      }
+      .top-bar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: 50px; /* fix height */
+        width: 100%; /* full width */
+        background:var(--bg-secondary); /* purple background */
+        border:1px solid var(--border); /* border */
+        padding: 0 15px;
+        border-radius: 6px;
+        box-sizing: border-box;
+      }
+
+      .sort-btn {
+        background: #3b2566;
+        border: none;
+        color: #fff;
+        font-size: 18px;
+        padding: 5px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      .search-input {
+        width: 300px; /* jitni jagah mile utni le */
+        height: 30px;
+        border: none;
+        border-radius: 6px;
+        padding: 0 10px;
+        outline: none;
+      }
+
+      .search-btn {
+        background: #4b2d7f;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 6px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .top-icons {
+        margin-left: auto; /* right side push */
+        display: flex;
+        gap: 8px;
+      }
+
+      .icon1-btn {
+        background: #3b2566;
+        border: none;
+        color: #fff;
+        font-size: 16px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      .hright-panel {
+        /* background-color: var(--bg-secondary); */
+        margin-bottom: 60px;
+        overflow-y: auto;
+        transition: transform 0.3s ease;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .brand-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: clamp(20px, 4vw, 30px);
+        margin-top: clamp(15px, 3vw, 20px);
+        gap: 10px;
+        padding: 0 10px;
+      }
+
+      .brand-logo {
+        height: clamp(30px, 6vw, 35px);
+        width: clamp(150px, 30vw, 180px);
+        object-fit: contain;
+      }
+      .storage-manager {
+        display: flex;
+        /* flex-direction: column; */
+        justify-content: center;
+      }
+
+      .side-panel {
+        background-color: var(--bg-secondary);
+        padding: 20px;
+        /* width: 200px; */
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .icon-buttons {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .icon-btn {
+        background: #2a2a3d;
+        border: none;
+        padding: 20px;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      .icon-btn img {
+        width: 24px;
+        height: 24px;
+      }
+
+      .storage-box {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: inherit;
+        gap: 10px;
+      }
+
+      .circle {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: conic-gradient(var(--border) 0% 36%, #333 36% 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 10px auto;
+      }
+
+      .circle-inner {
+        width: 80px;
+        height: 80px;
+        background: #1e1e2f;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .percentage {
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+      }
+
+      .storage-text {
+        color: #ccc;
+        font-size: 14px;
+      }
+
+      .settings-box {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        /* background: #2a1a4f; */
+        /* padding: 20px; */
+        margin-bottom: 10px;
+        width: 250px;
+        border-radius: 10px;
+        font-family: sans-serif;
+      }
+
+      .setting-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .setting-row label {
+        font-size: 14px;
+        margin-right: 10px;
+        color: #ff6b6b; /* red text for Delete period */
+        min-width: 90px;
+      }
+
+      .setting-row:nth-child(2) label {
+        color: #fff; /* Save To normal white */
+      }
+
+      .setting-row select {
+        flex: 1;
+        padding: 5px 10px;
+        border-radius: 6px;
+        border: none;
+        outline: none;
+        background: var(--bg-secondary);
+        color: #fff;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+        50% {
+          box-shadow: 0 4px 20px rgba(74, 144, 226, 0.5);
+        }
+        100% {
+          box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+      }
+
+      /* Responsive Design Breakpoints */
+
+      /* Large Desktop (1400px and up) */
+      @media (min-width: 1400px) {
+        .main-container {
+          grid-template-columns: 450px 1fr 450px;
+        }
+      }
+
+      /* Desktop (1200px - 1399px) */
+      @media (max-width: 1399px) {
+        .main-container {
+          grid-template-columns: 350px 1fr 350px;
+        }
+      }
+
+      /* Large Tablet (992px - 1199px) */
+      @media (max-width: 1199px) {
+        .main-container {
+          grid-template-columns: 300px 1fr 300px;
+        }
+
+        .control-buttons {
+          padding: 0 20px;
+        }
+      }
+
+      /* Tablet (768px - 991px) */
+      @media (max-width: 991px) {
+        .mobile-menu-toggle {
+          display: flex;
+        }
+
+        .main-container {
+          grid-template-columns: 1fr;
+          grid-template-rows: 1fr;
+        }
+
+        .left-panel,
+        .right-panel {
+          position: fixed;
+          top: 60px;
+          bottom: 80px;
+          width: 90%;
+          max-width: 400px;
+          z-index: 200;
+          transform: translateX(-100%);
+          box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .left-panel.active {
+          transform: translateX(0);
+        }
+
+        .right-panel {
+          right: 0;
+          transform: translateX(100%);
+        }
+
+        .right-panel.active {
+          transform: translateX(0);
+        }
+
+        .center-panel {
+          border: none;
+        }
+
+        .mindron-logo {
+          font-size: clamp(28px, 6vw, 48px);
+          letter-spacing: clamp(2px, 1vw, 4px);
+        }
+
+        .bottom-navbar {
+          height: 70px;
+          justify-content: space-between;
+          padding: 0 10px;
+        }
+
+        .nav-item {
+          min-width: auto;
+          flex: 1;
+          max-width: none;
+        }
+
+        .nav-label {
+          font-size: 10px;
+        }
+
+        .timestamp {
+          position: static;
+          order: -1;
+          font-size: 9px;
+        }
+      }
+
+      /* Mobile (576px - 767px) */
+      @media (max-width: 767px) {
+        .top-navbar {
+          height: 50px;
+          padding: 0 15px;
+        }
+
+        .nav-right {
+          gap: 8px;
+        }
+
+        .control-panel {
+          padding: 15px;
+        }
+
+        .control-row {
+          flex-direction: column;
+          gap: 8px;
+          align-items: stretch;
+        }
+
+        .control-btn {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .control-input {
+          width: 100%;
+          min-width: unset;
+        }
+
+        .bottom-results {
+          flex-direction: column;
+          gap: 15px;
+        }
+
+        .result-box {
+          min-width: unset;
+        }
+
+        .bottom-navbar {
+          height: 65px;
+          flex-wrap: wrap;
+          gap: 5px;
+        }
+
+        .nav-item {
+          min-width: 45px;
+        }
+
+        .nav-label {
+          font-size: 8px;
+        }
+      }
+
+      /* Small Mobile (up to 575px) */
+      @media (max-width: 575px) {
+        .top-navbar {
+          padding: 0 10px;
+        }
+
+        .left-panel,
+        .right-panel {
+          width: 95%;
+          max-width: none;
+        }
+
+        .control-buttons {
+          padding: 0 15px;
+        }
+
+        .brand-section {
+          margin-bottom: 15px;
+          margin-top: 10px;
+        }
+
+        .nav-right span {
+          display: none;
+        }
+
+        .nav-right .temp {
+          display: inline;
+        }
+
+        .bottom-navbar {
+          height: 60px;
+          padding: 0 5px;
+        }
+
+        .nav-item {
+          padding: 5px;
+          min-width: 40px;
+        }
+
+        .nav-icon {
+          font-size: 14px;
+        }
+
+        .nav-label {
+          font-size: 7px;
+        }
+
+        .timestamp {
+          font-size: 8px;
+        }
+      }
+
+      /* Extra Small Mobile (up to 400px) */
+      @media (max-width: 400px) {
+        .mindron-logo {
+          font-size: 24px;
+          letter-spacing: 2px;
+        }
+
+        .bottom-navbar .nav-item:nth-child(n + 7) {
+          display: none;
+        }
+
+        .control-btn {
+          padding: 8px 12px;
+          font-size: 11px;
+        }
+
+        .btn-text {
+          font-size: 10px;
+        }
+      }
+
+      /* Landscape orientation adjustments */
+      @media screen and (orientation: landscape) and (max-height: 500px) {
+        .brand-section {
+          margin-bottom: 10px;
+          margin-top: 5px;
+        }
+
+        .control-buttons {
+          gap: 8px;
+        }
+
+        .control-panel {
+          padding: 10px;
+          margin-bottom: 10px;
+        }
+
+        .mindron-logo {
+          font-size: clamp(20px, 4vh, 32px);
+        }
+      }
+
+      /* High DPI displays */
+      @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+        .brand-logo,
+        .reference-image {
+          image-rendering: -webkit-optimize-contrast;
+          image-rendering: crisp-edges;
+        }
+      }
+
+      /* Touch device optimizations */
+      @media (hover: none) and (pointer: coarse) {
+        .control-btn,
+        .nav-item {
+          min-height: 44px;
+          min-width: 44px;
+        }
+
+        .control-btn:hover {
+          background-color: #3a3a3a;
+          transform: none;
+        }
+
+        .nav-item:hover {
+          background-color: transparent;
+        }
+      }
+
+      .seeting-wraper {
+        display: flex;
+        justify-content: center;
+      }
+      .hright-panel {
+      }
+      .box {
+        /* flex: 1; */
+        padding: 20px;
+        border: 1px solid var(--border); /* purple border jaise screenshot */
+        border-radius: 6px; /* andar ka background purple shade */
+        height: 500px;
+        /* size fix (screenshot ke hisaab se adjust karna) */
+      }
+      .table-header {
+        display: flex;
+        align-items: center; /* purple background */
+        color: #fff;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 14px;
+        gap: 10px; /* sab columns ke beech thoda space */
+      }
+
+      .table-header .col {
+        padding: 4px 8px;
+        text-align: center;
+        white-space: nowrap; /* text ek line me rahe */
+      }
+
+      /* Column widths */
+      .table-header .no {
+        width: 50px;
+      }
+      .table-header .name {
+        flex: 1;
+        min-width: 120px;
+        text-align: left;
+      }
+      .table-header .lot {
+        width: 80px;
+      }
+      .table-header .type {
+        width: 80px;
+      }
+      .table-header .size {
+        width: 80px;
+      }
+      .table-header .remark {
+        flex: 1;
+        min-width: 120px;
+        text-align: left;
+      }
+      .table-header .date {
+        width: 100px;
+      }
+      .table-header .timestamp {
+        width: 120px;
+      }
+      .table-header .folder {
+        width: 100px;
+      }
+      .table-header .upload {
+        width: 80px;
+      }
+      .table-body{
+        background-color: var(--bg-secondary);
+        border-radius: 8px;
+        border:1px solid var(--border); /* purple border jaise screenshot */
+        overflow-x:calc(100vh-60px);
+        height: 71vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hmain">
+      <div class="hleft-panel">
+        <div class="brand-section">
+          <img src="../images/MINDRON.png" alt="logo" class="brand-logo" />
+          <p class="brand-subtitle" style="color: #4a90e2">Trusure-Mega</p>
+        </div>
+        <div class="seeting-wraper">
+          <div class="settings-box">
+            <div class="setting-row">
+              <label for="deletePeriod">Delete period</label>
+              <select id="deletePeriod">
+                <option value="never">Never</option>
+                <option value="1day">1 Day</option>
+                <option value="7days">7 Days</option>
+                <option value="30days">30 Days</option>
+              </select>
+            </div>
+
+            <div class="setting-row">
+              <label for="saveTo">Save To</label>
+              <select id="saveTo">
+                <option value="internal">Internal</option>
+                <option value="external">External</option>
+                <option value="cloud">Cloud</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="storage-manager">
+          <div class="side-panel">
+            <div class="icon-buttons">
+              <button class="icon-btn">
+                <img src="../images/copy.svg" alt="Copy" />
+              </button>
+              <button class="icon-btn">
+                <img src="../images/cloud_upload.svg" alt="Upload" />
+              </button>
+              <button class="icon-btn">
+                <img src="../images/delete.svg" alt="Delete" />
+              </button>
+            </div>
+
+            <div class="storage-box">
+              <div class="circle">
+                <div class="circle-inner" id="progress-circle">
+                  <span class="percentage">36%</span>
+                </div>
+              </div>
+              <p class="storage-text">Storage<br /><b>20G/59G</b></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="hcenter-panel">
+        <div class="top-bar">
+          <button class="sort-btn">⇅</button>
+          <input type="text" class="search-input" placeholder="Search..." />
+          <button class="search-btn">Search</button>
+          <button class="search-btn">Search All</button>
+          <button class="search-btn">Search Date</button>
+
+          <div class="top-icons">
+            <button class="icon1-btn">📧</button>
+            <button class="icon1-btn">☁️</button>
+            <button class="icon1-btn">⬆️</button>
+          </div>
+        </div>
+        <div class="table-header">
+          <div class="col no">No</div>
+          <div class="col name">Name</div>
+          <div class="col lot">Lot</div>
+          <div class="col type">Type</div>
+          <div class="col size">Size</div>
+          <div class="col remark">Remark</div>
+          <div class="col date">date</div>
+          <div class="col timestamp">timestamp</div>
+          <div class="col folder">folder</div>
+          <div class="col upload">Upload</div>
+        </div>
+        <div class="table-body">
+            <!-- Table rows will be added here dynamically -->
+             <!-- Sample table row -->
+            <div class="table-row">
+                <!-- <div class="col no">1</div>
+                <div class="col name">Sample File 1</div>
+                <div class="col lot">Lot 1</div>
+                <div class="col type">Type 1</div>
+                <div class="col size">Size 1</div>
+                <div class="col remark">Remark 1</div>
+                <div class="col date">2023-01-01</div>
+                <div class="col timestamp">12:34:56</div>
+                <div class="col folder">Folder 1</div>
+                <div class="col upload">
+                    <button class="upload-btn">Upload</button>
+                </div> -->
+            </div>
+        </div>
+      </div>
+      <div class="hright-panel">
+        <div class="box top-box"></div>
+        <div class="box bottom-box"></div>
+      </div>
+    </div>
+  </body>
+</html>
