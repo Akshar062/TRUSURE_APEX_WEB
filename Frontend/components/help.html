@@ -1,13 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Help Page</title>
-</head>
-<body>
+    <style>
+      .hpmain {
+        width: 100vw;
+        height: 92vh;
+        background-color: var(--bg-primary);
+        display: grid;
+        grid-template-columns: minmax(300px, 400px) 1fr minmax(300px, 400px);
+        gap: 0;
+        overflow: hidden;
+        position: relative;
+      }
+      .hpleft {
+        margin-bottom: 60px;
+        overflow-y: auto;
+        transition: transform 0.3s ease;
+        padding: 20px;
+      }
+      .hpcenter {
+        margin-bottom: 60px;
+        overflow-y: auto;
+        transition: transform 0.3s ease;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+      }
+      .hpright {
+        margin-bottom: 60px;
+        overflow-y: auto;
+        transition: transform 0.3s ease;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .brand-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: clamp(20px, 4vw, 30px);
+        margin-top: clamp(15px, 3vw, 20px);
+        gap: 10px;
+        padding: 0 10px;
+      }
+
+      .brand-logo {
+        height: clamp(30px, 6vw, 35px);
+        width: clamp(150px, 30vw, 180px);
+        object-fit: contain;
+      }
+    </style>
+  </head>
+  <body>
     <div class="hpmain">
-        <p>Work under progress...</p>
+      <div class="hpleft">
+        <div class="brand-section">
+          <img src="../images/MINDRON.png" alt="logo" class="brand-logo" />
+          <p class="brand-subtitle" style="color: #4a90e2">Trusure-Mega</p>
+        </div>
+      </div>
+      <div class="hpcenter">this is the center panel</div>
+      <div class="hpright">this is the right panel</div>
     </div>
-</body>
+  </body>
 </html>
