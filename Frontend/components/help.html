@@ -11,33 +11,33 @@
         background-color: var(--bg-primary);
         display: grid;
         grid-template-columns: minmax(300px, 400px) 1fr minmax(300px, 400px);
-        gap: 0;
         overflow: hidden;
         position: relative;
+        user-select: none;
       }
-      .hpleft {
-        margin-bottom: 60px;
-        overflow-y: auto;
-        transition: transform 0.3s ease;
-        padding: 20px;
-      }
-      .hpcenter {
-        margin-bottom: 60px;
-        overflow-y: auto;
-        transition: transform 0.3s ease;
-        padding: 20px;
-        border-radius: 8px;
-        border: 1px solid var(--border);
-      }
+
+      .hpleft,
+      .hpcenter,
       .hpright {
         margin-bottom: 60px;
         overflow-y: auto;
         transition: transform 0.3s ease;
         padding: 20px;
+      }
+
+      .hpcenter {
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        display: grid;
+        gap: 15px 20px;
+      }
+
+      .hpright {
         display: flex;
         flex-direction: column;
         gap: 20px;
       }
+
       .brand-section {
         display: flex;
         flex-direction: column;
@@ -54,6 +54,138 @@
         width: clamp(150px, 30vw, 180px);
         object-fit: contain;
       }
+
+      .box1 {
+        width: 100%;
+        height: 250px;
+        background-color: var(--bg-secondary);
+        display: flex;
+        flex-direction: column;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        font-size: 14px;
+        /* color: var(--text-secondary); */
+        color:white
+      }
+
+      .hshort {
+        font-weight: 600;
+        font-size: 16px;
+        color: white;
+        padding: 10px;
+      }
+
+      .hsave,
+      .hscanbo {
+        padding: 10px;
+        display: flex;
+        color: white;
+      }
+
+      .hsave {
+        gap: 30px;
+      }
+
+      .hscanbo {
+        gap: 60px;
+      }
+
+      .hsa {
+        padding: 20px;
+      }
+
+      .haddress {
+        padding: 20px;
+        font-size: 14px;
+        gap: 12px;
+        /* color: var(--text-primary); */
+        color:white;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Center grid */
+      .row1 {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+
+      .row2 {
+        display: flex;
+        margin-bottom: 30px;
+      }
+
+      .container {
+        background-color: var(--bg-secondary);
+        width: 150px;
+        height: 150px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        color: white;
+        transition: background 0.3s ease, transform 0.3s ease;
+        cursor: pointer;
+      }
+
+      .container:hover {
+        background-color: var(--accent);
+        transform: translateY(-1px);
+      }
+
+      .contact-section {
+        height: 300px;
+        width: 600px;
+        background: var(--bg-secondary);
+        border-radius: 12px;
+        padding: 20px;
+        border: 1px solid var(--border);
+      }
+
+      .contact-title {
+        color: aliceblue;
+        font-weight: 600;
+        font-size: 16px;
+        margin-bottom: 15px;
+      }
+
+      .contact-info {
+        color: white;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .qr-code {
+        margin-top: 40px;
+      }
+
+      .qr-code img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+      }
+
+      .bottom-info {
+        margin-top: 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 12px;
+      }
+
+      .e1 {
+        margin-bottom: 8px;
+      }
     </style>
   </head>
   <body>
@@ -64,8 +196,90 @@
           <p class="brand-subtitle" style="color: #4a90e2">Trusure-Mega</p>
         </div>
       </div>
-      <div class="hpcenter">this is the center panel</div>
-      <div class="hpright">this is the right panel</div>
+      <div class="hpcenter">
+        <div class="main-vala">
+          <div class="row1">
+            <div class="container">
+              <div class="icons">icons</div>
+              <div class="name">name</div>
+            </div>
+            <div class="container">
+              <div class="icons">icons</div>
+              <div class="name">name</div>
+            </div>
+            <div class="container">
+              <div class="icons">icons</div>
+              <div class="name">name</div>
+            </div>
+            <div class="container">
+              <div class="icons">icons</div>
+              <div class="name">name</div>
+            </div>
+            <div class="container">
+              <div class="icons">icons</div>
+              <div class="name">name</div>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="container">
+              <div class="icons">icons</div>
+              <div class="name">name</div>
+            </div>
+          </div>
+
+          <div class="contact-section">
+            <div class="contact-title">Contact Us :</div>
+            <div class="contact-info">
+              <div class="e1">Email : info@mindron.in / support@mindron.in</div>
+              <div>Website : www.mindron.in</div>
+            </div>
+            <div class="qr-code">
+              <img src="../images/qr.jpg" alt="qr button" />
+            </div>
+          </div>
+
+          <div class="bottom-info">
+            <div>
+              TA000<br />
+              Version : 2.0.0
+            </div>
+            <div>Copyright © 2025 Mindron. All Rights Reserved.</div>
+          </div>
+        </div>
+      </div>
+      <div class="hpright">
+        <div class="box1 top1-box">
+          <div class="hsa">
+            <div class="hshort">Shortcut Keys:</div>
+            <div class="hsave">
+              <div>Ctrl+S</div>
+              <div>Save Image</div>
+            </div>
+            <div class="hscanbo">
+              <div>S</div>
+              <div>Scan</div>
+            </div>
+            <div class="hscanbo">
+              <div>H</div>
+              <div>Home</div>
+            </div>
+            <div class="hscanbo">
+              <div>R</div>
+              <div>Result</div>
+            </div>
+            <div class="hscanbo">
+              <div>C</div>
+              <div>Compare</div>
+            </div>
+          </div>
+        </div>
+        <div class="box1 bottom1-box">
+          <div class="haddress">
+            <div>MAC Ethernet: d8:dd:ef:d3:1f</div>
+            <div>MAC WIFI : d8:dd:ef:d3:20</div>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>
