@@ -16,99 +16,107 @@ export class UIControls {
     /**
      * Set up navigation tab functionality
      */
-        static setupNavigationTabs() {
-        // Define routes
-        const routes = {
-            "/": "home",
-            "/home": "home",
-            "/scan": "scan",
-            "/result": "result",
-            "/compare": "compare",
-            "/certificates": "certificates",
-            "/history": "history",
-            "/settings": "settings",
-            "/help": "help"
-        };
 
-        const navItems = document.querySelectorAll('.nav-item');
-        
-        navItems.forEach(item => {
-            item.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Remove active class from all items
-                navItems.forEach(nav => nav.classList.remove('active'));
-                
-                // Add active class to clicked item
-                this.classList.add('active');
-                
-                // Get the route from data attribute
-                const tab = this.getAttribute('data-tab');
-                const route = routes[`/${tab}`] || tab;
-                
-                console.log('Navigating to:', route);
-                
-                // Navigate to the page
-                UIControls.navigateToPage(route);
-            });
+    static setupNavigationTabs() {
+    // Define routes
+    const routes = {
+        "/": "home",
+        "/home": "home",
+        "/scan": "scan",
+        "/result": "result",
+        "/compare": "compare",
+        "/certificates": "certificates",
+        "/history": "history",
+        "/settings": "settings",
+        "/help": "help"
+    };
+
+    const navItems = document.querySelectorAll('.nav-item');
+
+    navItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const tab = this.getAttribute('data-tab');
+            const route = routes[`/${tab}`] || tab;
+
+            // ✅ Prevent reload if already on same route
+            if (UIControls.currentRoute === route) {
+                console.log("Already on the same route:", route);
+                return;
+            }
+
+            // Remove active class from all items
+            navItems.forEach(nav => nav.classList.remove('active'));
+
+            // Add active class to clicked item
+            this.classList.add('active');
+
+            console.log('Navigating to:', route);
+
+            // Navigate to the page
+            UIControls.navigateToPage(route);
         });
-    }
+    });
+}
+
 
     /**
      * Navigate to different pages based on route
      * @param {string} route - The route to navigate to
      */
+  
     static async navigateToPage(route) {
-        const mainContent = document.querySelector('.sidebar').parentElement;
+    // Save the current route
+    UIControls.currentRoute = route;
 
-        // Hide all core sections initially
-        const sections = ['.sidebar', '.camera-area', '.controls-panel', '.wake-area'];
+    const mainContent = document.querySelector('.sidebar').parentElement;
+
+    // Hide all core sections initially
+    const sections = ['.sidebar', '.camera-area', '.controls-panel', '.wake-area'];
+    sections.forEach(sel => {
+        const el = document.querySelector(sel);
+        if (el) el.style.display = 'none';
+    });
+
+    // Hide all dynamic containers (result, scan, etc.)
+    document.querySelectorAll('.page-container').forEach(container => {
+        container.style.display = 'none';
+    });
+
+    if (route === 'home') {
+        // Show main layout again
         sections.forEach(sel => {
             const el = document.querySelector(sel);
-            if (el) el.style.display = 'none';
+            if (el) el.style.display = 'block';
         });
-
-        // Hide all dynamic containers (result, scan, etc.)
-        document.querySelectorAll('.page-container').forEach(container => {
-            container.style.display = 'none';
-        });
-
-        // Handle routes
-        if (route === 'home') {
-            // Show main layout again
-            sections.forEach(sel => {
-                const el = document.querySelector(sel);
-                if (el) el.style.display = 'block';
-            });
-            return;
-        }
-
-        // For result, scan, compare, etc.
-        try {
-            const response = await fetch(`./components/${route}.html`);
-            const resultHTML = await response.text();
-
-            // Create or update container
-            let container = document.getElementById(route);
-            if (!container) {
-                container = document.createElement('div');
-                container.id = route;
-                container.classList.add('page-container'); // pick up CSS styles
-                mainContent.appendChild(container);
-            }
-
-            // Parse HTML and extract matching section
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(resultHTML, 'text/html');
-            const bodyContent = doc.querySelector(`#${route}`);
-
-            container.innerHTML = bodyContent ? bodyContent.outerHTML : resultHTML;
-            container.style.display = 'flex';
-
-        } catch (error) {
-            console.error(`Error loading ${route} page:`, error);
-        }
+        return;
     }
+
+    try {
+        const response = await fetch(`./components/${route}.html`);
+        const resultHTML = await response.text();
+
+        let container = document.getElementById(route);
+        if (!container) {
+            container = document.createElement('div');
+            container.id = route;
+            container.classList.add('page-container');
+            mainContent.appendChild(container);
+        }
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(resultHTML, 'text/html');
+        const bodyContent = doc.querySelector(`#${route}`);
+
+        container.innerHTML = bodyContent ? bodyContent.outerHTML : resultHTML;
+        container.style.display = 'flex';
+
+    } catch (error) {
+        console.error(`Error loading ${route} page:`, error);
+    }
+}
+
 
     /**
      * Set up control buttons (light, scan, etc.)

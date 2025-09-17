@@ -72,6 +72,7 @@ body {
     justify-content: space-between;
     padding: 0 20px;
     z-index: 1000;
+    user-select: none;
 }
 
 .footer-container {
@@ -88,6 +89,7 @@ body {
     justify-content: space-between;
     padding: 0 20px;
     z-index: 1000;
+    user-select: none;
 }
 
 .footer-center {
@@ -654,6 +656,7 @@ body {
     padding-top: 40px;
     border-right: 1px solid var(--border);
     overflow-y: auto;
+    user-select: none;
 }
 
 .logo {
@@ -897,7 +900,6 @@ body {
     background: var(--bg-tertiary);
     border-radius: 8px;
     position: relative;
-    overflow: hidden; /* Ensure scroll events are captured */
 }
 
 .camera-placeholder {
@@ -927,6 +929,7 @@ body {
     padding: 40px;
     padding-top: 40px;
     border-left: 1px solid var(--border);
+    user-select:none;
 }
 
 .control-group {
@@ -1040,8 +1043,12 @@ body {
     flex:1;
     padding:20px;
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-    align-items: center
+    user-select:none;
+    color:white;
+    gap:30px;
 }
 
 /* #compare{

@@ -1,16 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="../style.css">
-</head>
-<body>
-    <div id="scan">
-        <div class="result-header">
-            <h2>Work in progess......</h2>
-        </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loader Text Animation</title>
+    <style>
+      /* body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        font-family: Arial, sans-serif;
+        background: #f9f9f9;
+      } */
+
+      .loader {
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 12px solid var(--accent);
+        border-right: 12px solid var(--border);
+        border-bottom: 12px solid var(--foreground);
+        border-left: 12px solid var(--diagnostic);
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+        margin-bottom: 20px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .loading-text{
+        font-size: 1.5em;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      /* 🔥 Text animation */
+      .loading-text span {
+        opacity: 0;
+        animation: fade 1s infinite;
+      }
+
+      .loading-text span:nth-child(1) {
+        animation-delay: 0s;
+      }
+      .loading-text span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .loading-text span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      .loading-text span:nth-child(4) {
+        animation-delay: 0.6s;
+      }
+      .loading-text span:nth-child(5) {
+        animation-delay: 0.8s;
+      }
+      .loading-text span:nth-child(6) {
+        animation-delay: 1s;
+      }
+      .loading-text span:nth-child(7) {
+        animation-delay: 1.2s;
+      }
+      .loading-text span:nth-child(8) {
+        animation-delay: 1.4s;
+      }
+      .loading-text span:nth-child(9) {
+        animation-delay: 1.6s;
+      }
+      .loading-text span:nth-child(10) {
+        animation-delay: 1.8s;
+      }
+
+      @keyframes fade {
+        0%,
+        100% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loader"></div>
+
+    <!-- Har ek letter ko span me rakha -->
+    <div class="loading-text">
+      <span>L</span>
+      <span>o</span>
+      <span>a</span>
+      <span>d</span>
+      <span>i</span>
+      <span>n</span>
+      <span>g</span>
+      <span>.</span>
+      <span>.</span>
+      <span>.</span>
     </div>
-</body>
+  </body>
 </html>
